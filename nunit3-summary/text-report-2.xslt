@@ -47,10 +47,10 @@
     <xsl:apply-templates select="//test-case[@result='Skipped']"/>
 
     <!-- Errors and Failures -->
-    <xsl:if test="//test-case[failure]">
+    <!--<xsl:if test="//test-case[failure]">
       <xsl:value-of select="concat('Errors and Failures',$break)"/>
     </xsl:if>
-    <xsl:apply-templates select="//test-case[failure]"/>
+    <xsl:apply-templates select="//test-case[failure]"/>-->
 
     <!-- Run Settings (gets first one found) -->
     <!--
@@ -131,7 +131,6 @@
     <xsl:value-of select="concat(position(), ') ', $type,' : ', @fullname, $newline, child::node()/message)"/>
     <xsl:choose>
       <xsl:when test="$type='Passed'">
-        <xsl:value-of select="output"/>
         <xsl:value-of select="$newline"/>
       </xsl:when>
       <xsl:when test="$type='Failed'">
@@ -145,8 +144,14 @@
       </xsl:otherwise>
     </xsl:choose>
 
+    <xsl:if test="output">
+      <xsl:value-of select="concat('Output:',$break)"/>
+      <xsl:value-of select="output"/>
+    </xsl:if>
+
     <!-- Stack trace for failures -->
     <xsl:if test="failure">
+      <xsl:value-of select="concat('Errors and Failures:',$break)"/>
       <xsl:choose>
         <xsl:when test="$type='Failed'">
           <xsl:value-of select="concat(failure/stack-trace,$newline)"/>

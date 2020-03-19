@@ -36,12 +36,10 @@
 
     <xsl:value-of select="$break"/>
 
-    <!-- Tests Passed -->
-    <xsl:if test="//test-case[@result='Passed']">
-      <xsl:value-of select="concat('Tests Passed',$break)"/>
-    </xsl:if>
-    <xsl:apply-templates select="//test-case[@result='Passed']"/>
-
+    <!-- Tests Run -->
+    <xsl:value-of select="concat('Tests Run',$break)"/>
+    <xsl:apply-templates select="//test-case"/>
+    
     <!-- Tests Not Run -->
     <xsl:if test="//test-case[@result='Skipped']">
       <xsl:value-of select="concat('Tests Not Run',$break)"/>
@@ -101,7 +99,7 @@
     <xsl:variable name="type">
       <xsl:choose>
         <xsl:when test="@result='Passed'">
-          <xsl:value-of select="@label"/>
+          <xsl:value-of select="'Passed'"/>
         </xsl:when>
         <xsl:when test="@result='Skipped'">
           <xsl:choose>

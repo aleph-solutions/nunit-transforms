@@ -146,7 +146,7 @@
 
     <xsl:if test="output">
       <xsl:value-of select="concat('Output:',$newline)"/>
-      <xsl:value-of select="output"/>
+      <xsl:value-of select="concat(output,$break)"/>
     </xsl:if>
 
     <!-- Stack trace for failures -->

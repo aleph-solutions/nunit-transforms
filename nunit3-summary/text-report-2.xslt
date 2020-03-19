@@ -130,6 +130,10 @@
     <!-- Show details of test-cases either skipped or errored -->
     <xsl:value-of select="concat(position(), ') ', $type,' : ', @fullname, $newline, child::node()/message)"/>
     <xsl:choose>
+      <xsl:when test="$type='Passed'">
+        <xsl:value-of select="output"/>
+        <xsl:value-of select="$newline"/>
+      </xsl:when>
       <xsl:when test="$type='Failed'">
         <xsl:value-of select="$newline"/>
       </xsl:when>

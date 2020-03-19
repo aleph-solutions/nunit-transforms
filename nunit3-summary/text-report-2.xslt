@@ -145,14 +145,14 @@
     </xsl:choose>
 
     <xsl:if test="output">
-      <xsl:value-of select="'Output:'"/>
-      <xsl:value-of select="concat(output,$break)"/>
+      <xsl:value-of select="concat($newline,'Output:')"/>
+      <xsl:value-of select="output"/>
     </xsl:if>
 
     <!-- Stack trace for failures -->
     <xsl:if test="failure">
-      <xsl:value-of select="'Errors and Failures:'"/>
-      <xsl:value-of select="concat(failure/message,$break)"/>
+      <xsl:value-of select="concat($newline,'Errors and Failures:')"/>
+      <xsl:value-of select="concat(failure/message,$newline)"/>
       <xsl:choose>
         <xsl:when test="$type='Failed'">
           <xsl:value-of select="concat(failure/stack-trace,$newline)"/>

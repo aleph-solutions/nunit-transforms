@@ -14,7 +14,7 @@
   </xsl:variable>
 
   <xsl:template match="test-run">
-    
+
     <!-- Command Line -->
     <xsl:value-of select="concat('Command Line ', $newline)"/>
     <xsl:value-of select="concat(command-line, $break)"/>
@@ -37,9 +37,9 @@
     <xsl:value-of select="$break"/>
 
     <!-- Tests Run -->
-    <xsl:value-of select="concat('Tests Run',$break)"/>
-    <xsl:apply-templates select="//test-case"/>
-    
+    <xsl:value-of select="concat('Tests Run',$newline)"/>
+    <xsl:apply-templates select="//test-suite[@type='ParameterizedMethod']"/>
+
     <!-- Tests Not Run -->
     <xsl:if test="//test-case[@result='Skipped']">
       <xsl:value-of select="concat('Tests Not Run',$break)"/>
@@ -94,6 +94,12 @@
 
   </xsl:template>
 
+  <xsl:template match="test-suite">
+    <xsl:value-of select="concat($newline,'-TEST_SUITE: ', @fullname, $newline)"/>
+    <xsl:value-of select="concat(' ',properties/property[@name='Description']/@value,$newline)"/>
+    <xsl:apply-templates select="test-case"/>
+  </xsl:template>
+
   <xsl:template match="test-case">
     <!-- Determine type of test-case for formatting -->
     <xsl:variable name="type">
@@ -126,9 +132,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <!-- Show details of test-cases either skipped or errored -->
-    <xsl:value-of select="concat(position(), ') ', $type,' : ', @fullname)"/>
+    <xsl:value-of select="concat($newline,'--TEST_CASE [', $type,'] : ', @fullname)"/>
     <xsl:choose>
       <xsl:when test="$type='Passed'">
         <xsl:value-of select="$newline"/>
@@ -144,15 +150,15 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <xsl:if test="output">
-      <xsl:value-of select="concat($newline,'Output:')"/>
-      <xsl:value-of select="output"/>
+    <xsl:if test="properties/property[@name='Description']">
+      <xsl:value-of select="concat('  ',properties/property[@name='Description']/@value,$break)"/>
     </xsl:if>
+
+    <xsl:value-of select="output"/>
 
     <!-- Stack trace for failures -->
     <xsl:if test="failure">
-      <xsl:value-of select="concat($newline,'Errors and Failures:')"/>
-      <xsl:value-of select="concat(failure/message,$newline)"/>
+      <xsl:value-of select="concat('  (Failed)',failure/message)"/>
       <xsl:choose>
         <xsl:when test="$type='Failed'">
           <xsl:value-of select="concat(failure/stack-trace,$newline)"/>

@@ -128,7 +128,7 @@
     </xsl:variable>
     
     <!-- Show details of test-cases either skipped or errored -->
-    <xsl:value-of select="concat(position(), ') ', $type,' : ', @fullname, $newline, child::node()/message)"/>
+    <xsl:value-of select="concat(position(), ') ', $type,' : ', @fullname)"/>
     <xsl:choose>
       <xsl:when test="$type='Passed'">
         <xsl:value-of select="$newline"/>
@@ -152,6 +152,7 @@
     <!-- Stack trace for failures -->
     <xsl:if test="failure">
       <xsl:value-of select="concat('Errors and Failures:',$break)"/>
+      <xsl:value-of select="failure/message"/>
       <xsl:choose>
         <xsl:when test="$type='Failed'">
           <xsl:value-of select="concat(failure/stack-trace,$newline)"/>
